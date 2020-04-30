@@ -7,6 +7,9 @@ import MenuIcon from '@material-ui/icons/Menu';
 import Button from "@material-ui/core/Button"
 import Container from "@material-ui/core/Container"
 import { useOktaAuth } from '@okta/okta-react';
+import Box from "@material-ui/core/Box"
+import Link from 'next/link'
+import { findByLabelText } from "@testing-library/react"
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -16,14 +19,52 @@ const useStyles = makeStyles((theme) => ({
     marginRight: theme.spacing(2),
   },
   title: {
-    flexGrow: 1,
+    minWidth: '10vw'
   },
   footer: {
     backgroundColor: theme.palette.background.paper,
-    // marginTop: theme.spacing(8),
     padding: theme.spacing(6, 0),
-  }
+    width: '100%',
+  },
+  header: {
+    height: '10vh',
+    background: '#738273',
+    color: '#B6CCCB'
+  },
 }));
+
+const Header: React.FC = (props) => {
+  const classes = useStyles()
+  const { authState, authService } = useOktaAuth()
+  const login = () => authService.login('/')
+  const logout = () => authService.logout('/')
+  return (
+    <AppBar position="static">
+      <Toolbar>
+
+        <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
+          <MenuIcon />
+        </IconButton>
+        <Link href="/">
+          <a>
+            <img src="/images/transparentBug.png" height="48" width="48" alt="Bug logo" />
+          </a>
+        </Link>
+        <Box pl={2} className={classes.title}>
+          <Typography variant="h6" >
+            Bug Tracker
+          </Typography>
+        </Box>
+        <Box style={{
+          marginLeft: 'auto',
+        }}>
+          {authState.isAuthenticated ? <Button color="inherit" onClick={logout}>Logout</Button> : <Button color="inherit" onClick={login}>Login</Button>}
+        </Box>
+      </Toolbar>
+    </AppBar>
+  )
+}
+
 const Footer: React.FC = () => {
   const classes = useStyles()
   return (
@@ -40,28 +81,16 @@ const Footer: React.FC = () => {
   );
 }
 
-export const Layout: React.FunctionComponent = (props) => {
-  const classes = useStyles();
-  const { authState, authService } = useOktaAuth()
-  const login = () => authService.login('/');
+
+
+const Layout: React.FC = (props) => {
+  const classes = useStyles()
   return (
-    <div>
-      <AppBar position="static">
-        <Toolbar>
-          <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
-            <MenuIcon />
-          </IconButton>
-          <Typography variant="h6" className={classes.title}>
-            Bug Tracker
-    </Typography>
-          <Button color="inherit" onClick={login}>Login</Button>
-        </Toolbar>
-      </AppBar>
+    <div >
+      <Header />
       {props.children}
-
       <Footer />
-
     </div>
-
   )
 }
+export default Layout
