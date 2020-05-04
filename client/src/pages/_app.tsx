@@ -11,11 +11,13 @@ import { Theme, ThemeOptions } from '@material-ui/core/styles/createMuiTheme';
 
 declare module '@material-ui/core/styles/createMuiTheme' {
   interface Theme {
-    textColor: React.CSSProperties['color']
+    textColor: React.CSSProperties['color'],
+    red: React.CSSProperties['color']
   }
   // allow configuration using `createMuiTheme`
   interface ThemeOptions {
-    textColor: React.CSSProperties['color']
+    textColor: React.CSSProperties['color'],
+    red: React.CSSProperties['color']
   }
 }
 
@@ -42,6 +44,7 @@ const store = configureStore({
 
 const theme = createMyTheme({
   textColor: '#757575',
+  red: '#825254',
 });
 
 function App({ Component, pageProps }: AppProps) {

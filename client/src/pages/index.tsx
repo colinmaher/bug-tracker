@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
     textAlign: 'center',
   },
   demoImgContainer: {
-    padding: '2em 1em 2em 1em',
+    // padding: '2em 1em 2em 1em',
     maxWidth: '100%',
     maxHeight: '100%',
   },
@@ -75,7 +75,7 @@ export default function Home() {
       <Head title="Bug Tracker" />
       <Layout >
         <Container maxWidth="lg" className={classes.jumbotron} >
-          <Box mt={4} mb={5} p={2} style={{ display: 'flex' }}>
+          <Box mt={4} mb={5} p={2} >
             <Grid container className={classes.main}>
               <Grid item sm={12} md={6}>
                 <Box p={5}>

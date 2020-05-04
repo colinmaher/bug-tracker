@@ -1,4 +1,4 @@
-import { makeStyles } from "@material-ui/core/styles"
+import { makeStyles, useTheme } from "@material-ui/core/styles"
 import AppBar from "@material-ui/core/AppBar"
 import Toolbar from "@material-ui/core/Toolbar"
 import IconButton from "@material-ui/core/IconButton"
@@ -10,16 +10,26 @@ import { useOktaAuth } from '@okta/okta-react';
 import Box from "@material-ui/core/Box"
 import Link from 'next/link'
 import { findByLabelText } from "@testing-library/react"
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 const useStyles = makeStyles((theme) => ({
-  root: {
+  main: {
     flexGrow: 1,
+    minHeight: '100vh',
   },
   menuButton: {
     marginRight: theme.spacing(2),
   },
+  menuButtonMobile: {
+
+  },
   title: {
-    minWidth: '10vw'
+    minWidth: '10vw',
+    marginLeft: theme.spacing(2),
+  },
+  mobileTitle: {
+    display: 'flex',
+    justifyContent: 'center',
   },
   footer: {
     backgroundColor: theme.palette.background.paper,
@@ -31,30 +41,46 @@ const useStyles = makeStyles((theme) => ({
     background: '#738273',
     color: '#B6CCCB'
   },
+  iconContainer: {
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+  },
 }));
 
 const Header: React.FC = (props) => {
   const classes = useStyles()
+  const theme = useTheme()
+  const matches = useMediaQuery(theme.breakpoints.down('sm'))
   const { authState, authService } = useOktaAuth()
   const login = () => authService.login('/')
   const logout = () => authService.logout('/')
+  const TitleContainer: React.FC = (props) => {
+    return matches ? <Box pl={2} className={classes.mobileTitle}>{props.children}</Box>
+      : <Box className={classes.title}>{props.children}</Box>
+  }
   return (
     <AppBar position="static">
       <Toolbar>
-
-        <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
+        {matches ? <IconButton edge="start" color="inherit" aria-label="menu">
           <MenuIcon />
         </IconButton>
+          : <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
+            <MenuIcon />
+          </IconButton>}
+
         <Link href="/">
-          <a>
-            <img src="/images/transparentBug.png" height="48" width="48" alt="Bug logo" />
+          <a className={classes.iconContainer}>
+            {matches ? <img src="/images/transparentBug.png" height="36" width="36" alt="Bug logo" />
+              : <img src="/images/transparentBug.png" height="48" width="48" alt="Bug logo" />}
           </a>
         </Link>
-        <Box pl={2} className={classes.title}>
+        <TitleContainer>
           <Typography variant="h6" >
             Bug Tracker
           </Typography>
-        </Box>
+        </TitleContainer>
+
         <Box style={{
           marginLeft: 'auto',
         }}>
@@ -88,7 +114,10 @@ const Layout: React.FC = (props) => {
   return (
     <div >
       <Header />
-      {props.children}
+      <main className={classes.main}>
+        {props.children}
+
+      </main>
       <Footer />
     </div>
   )

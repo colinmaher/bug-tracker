@@ -1,38 +1,24 @@
 import { useOktaAuth } from '@okta/okta-react';
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import Head from '../components/Head'
 import Layout from '../components/Layout';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
-import { makeStyles } from '@material-ui/core/styles'
+import { makeStyles, useTheme } from '@material-ui/core/styles'
 import Container from '@material-ui/core/Container';
 import Grid from '@material-ui/core/Grid';
 import grey from '@material-ui/core/colors/grey';
-const useStyles = makeStyles((theme) => ({
-  pageTitle: {
-    color: theme.textColor,
-  },
-  main: {
-    maxWidth: '90vw',
-    backgroundColor: theme.palette.secondary.main,
-    color: 'white',
-    borderRadius: '5px',
-    boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
-    width: '100%',
-    height: '90%',
-  },
-  container: {
-    height: '90vh',
-  },
-  projectContainer: {
-    width: '100%',
-    height: '100%',
-    backgroundColor: grey[200],
-    color: theme.textColor,
-    borderRadius: '5px',
-    boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
-  },
-}))
+import Fab from '@material-ui/core/Fab';
+import AddIcon from '@material-ui/icons/Add';
+import Paper from '@material-ui/core/Paper';
+import Backdrop from '@material-ui/core/Backdrop';
+import useMediaQuery from '@material-ui/core/useMediaQuery';
+import Card from '@material-ui/core/Card';
+import TextField from '@material-ui/core/TextField';
+import FormControl from '@material-ui/core/FormControl';
+import ClickAwayListener from '@material-ui/core/ClickAwayListener';
+import Button from '@material-ui/core/Button';
+
 const projects = [
   {
     name: 'Project 1',
@@ -69,50 +55,201 @@ const projects = [
   },
 ]
 
+// if (breakpoint === '')
+
+const useStyles = makeStyles((theme) => ({
+  pageTitle: {
+    color: theme.textColor,
+    alignSelf: 'flex-start',
+    display: 'flex',
+  },
+  main: {
+    maxWidth: '90vw',
+    backgroundColor: theme.palette.secondary.main,
+    color: 'white',
+    borderRadius: '5px',
+    boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
+    width: '100%',
+    height: '100%',
+    // maxHeight: '90%',
+    flex: 1,
+    // marginBottom: '5em',
+  },
+  container: {
+    height: '100%',
+    minHeight: '90vh',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  projectContainer: {
+    // width: '100%',
+    // margin: '1em',
+    padding: '1em',
+    // height: '100%',
+
+    backgroundColor: grey[200],
+    color: theme.textColor,
+    borderRadius: '5px',
+    boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
+    minHeight: '12em',
+    display: 'flex',
+    flexDirection: 'column',
+
+  },
+  addIcon: {
+    backgroundColor: theme.palette.info.main,
+    color: grey[200],
+    padding: '1em 2em 1em 2em',
+    '&:hover': {
+      backgroundColor: theme.palette.info.light,
+    },
+    // float: 'right',
+    // position: 'relative',
+    // top: '3em',
+    // right: '1em'
+    marginTop: 'auto',
+    marginLeft: 'auto',
+  },
+  label: {
+    borderRadius: '5px',
+    boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)',
+    color: 'white',
+    padding: '.5em',
+    whiteSpace: 'nowrap',
+    // margin: '.25em',
+    width: '100%',
+  },
+  backlog: {
+    backgroundColor: theme.red,
+  },
+  inProgress: {
+    backgroundColor: theme.palette.info.main,
+  },
+  completed: {
+    backgroundColor: theme.palette.primary.main,
+  },
+  backdrop: {
+    zIndex: theme.zIndex.drawer + 1,
+    color: '#fff',
+  },
+  projectForm: {
+    display: 'flex',
+    justifyContent: 'flex-start',
+    padding: theme.spacing(2),
+    minHeight: '50vh',
+  },
+}))
+
+
 function Projects() {
   const { authState, authService } = useOktaAuth()
   const classes = useStyles()
+  const [backdropOpen, setBackDropOpen] = useState(false)
+  const theme = useTheme()
+  const matches = useMediaQuery(theme.breakpoints.down('sm'))
   useEffect(() => {
-
+    // load latest project data from api
   })
+  function handleCreateProject() {
+    console.log('open backdrop')
+    setBackDropOpen(true)
+  }
+  function handleBackdropClose() {
+    console.log('close backdrop called')
+    if (backdropOpen) setBackDropOpen(false)
+  }
+  function handleFormSubmit(e: React.FormEvent<HTMLDivElement>) {
+    e.preventDefault()
+    console.log('form submitted')
+  }
+
+  const ClickAway: React.FC = (props) => {
+    return backdropOpen ? <ClickAwayListener onClickAway={handleBackdropClose}>
+      {props.children}
+    </ClickAwayListener> : <div>{props.children}</div>
+  }
+
+  const TitleContainer: React.FC = (props) => {
+    return matches ?
+      <Box mt={3} mb={3} pl={2} className={classes.pageTitle}>
+        {props.children}
+      </Box> :
+      <Box mt={3} mb={3} pl={2} ml={7} className={classes.pageTitle}>
+        {props.children}
+      </Box>
+  }
   return (
     <div>
       <Head title="Projects" />
       <Layout>
-
-        <Container className={classes.container}>
-          <Box mt={3} mb={3} pl={2}>
-            <Typography variant="h5" className={classes.pageTitle}>
+        <Container maxWidth="xl" className={classes.container}>
+          <TitleContainer>
+            <Typography variant="h5">
               Projects
-          </Typography>
-          </Box>
+            </Typography>
+          </TitleContainer>
           <Box p={2} className={classes.main}>
-            <Grid container>
+            <Grid container spacing={3}>
+              <Grid item xs={12} sm={3} >
+                <Paper className={classes.projectContainer}>
+                  <Typography variant="h5">
+                    Create Project
+                </Typography>
+                  <Fab onClick={handleCreateProject} className={classes.addIcon}>
+                    <AddIcon />
+                  </Fab>
+                </Paper>
+              </Grid>
               {projects.map((project) => {
                 return (
-                  <Grid item xs={12} sm={3}>
-                    <Box p={3} m={1} className={classes.projectContainer}>
+                  <Grid item xs={12} sm={3} >
+                    <Paper className={classes.projectContainer}>
                       <Typography variant="h5">
                         {project.name}
                       </Typography>
-                      <Typography variant="body1">
-                        Backlog: {project.backlog}
-                      </Typography>
-                      <Typography variant="body1">
-                        In progress: {project.inProgress}
-                      </Typography>
-                      <Typography variant="body1">
-                        Completed: {project.completed}
-                      </Typography>
-                    </Box>
+                      {/* TODO make labels responsive */}
+                      <Grid container direction="row" spacing={1} style={{ marginTop: 'auto' }}>
+                        <Grid item sm={12} md={4}>
+                          <Typography variant="body1" className={`${classes.backlog} ${classes.label}`}>
+                            Backlog: {project.backlog}
+                          </Typography>
+                        </Grid>
+                        <Grid item sm={12} md={4}>
+                          <Typography variant="body1" className={`${classes.inProgress} ${classes.label}`}>
+                            In progress: {project.inProgress}
+                          </Typography>
+                        </Grid>
+                        <Grid item sm={12} md={4}>
+                          <Typography variant="body1" className={`${classes.completed} ${classes.label}`}>
+                            Completed: {project.completed}
+                          </Typography>
+                        </Grid>
+                      </Grid>
+                    </Paper>
                   </Grid>
                 )
               })}
             </Grid>
           </Box>
-        </Container>
-      </Layout>
-    </div>
+          <ClickAway>
+            <Backdrop className={classes.backdrop} open={backdropOpen}>
+              <ClickAwayListener onClickAway={handleBackdropClose}>
+                <Container maxWidth="sm">
+                  <Card className={classes.projectForm}>
+                    <FormControl onSubmit={handleFormSubmit}>
+                      <TextField id="outlined-basic" label="Project Name" required variant="outlined" />
+                      <Button type="submit" variant="contained" color="primary">Create</Button>
+                    </FormControl>
+                  </Card>
+                </Container>
+              </ClickAwayListener>
+            </Backdrop>
+          </ClickAway>
+        </Container >
+      </Layout >
+    </div >
   )
 }
 export default Projects
