@@ -18,6 +18,7 @@ import TextField from '@material-ui/core/TextField';
 import FormControl from '@material-ui/core/FormControl';
 import ClickAwayListener from '@material-ui/core/ClickAwayListener';
 import Button from '@material-ui/core/Button';
+import CreateProjectForm from '../components/CreateProjectForm';
 
 const projects = [
   {
@@ -119,7 +120,7 @@ const useStyles = makeStyles((theme) => ({
     padding: '.5em',
     whiteSpace: 'nowrap',
     // margin: '.25em',
-    width: '100%',
+    // width: '100%',
   },
   backlog: {
     backgroundColor: theme.red,
@@ -130,16 +131,7 @@ const useStyles = makeStyles((theme) => ({
   completed: {
     backgroundColor: theme.palette.primary.main,
   },
-  backdrop: {
-    zIndex: theme.zIndex.drawer + 1,
-    color: '#fff',
-  },
-  projectForm: {
-    display: 'flex',
-    justifyContent: 'flex-start',
-    padding: theme.spacing(2),
-    minHeight: '50vh',
-  },
+
 }))
 
 
@@ -156,19 +148,8 @@ function Projects() {
     console.log('open backdrop')
     setBackDropOpen(true)
   }
-  function handleBackdropClose() {
-    console.log('close backdrop called')
-    if (backdropOpen) setBackDropOpen(false)
-  }
-  function handleFormSubmit(e: React.FormEvent<HTMLDivElement>) {
-    e.preventDefault()
-    console.log('form submitted')
-  }
-
-  const ClickAway: React.FC = (props) => {
-    return backdropOpen ? <ClickAwayListener onClickAway={handleBackdropClose}>
-      {props.children}
-    </ClickAwayListener> : <div>{props.children}</div>
+  function handleBackdrop(backdropState: boolean) {
+    setBackDropOpen(backdropState)
   }
 
   const TitleContainer: React.FC = (props) => {
@@ -192,11 +173,11 @@ function Projects() {
           </TitleContainer>
           <Box p={2} className={classes.main}>
             <Grid container spacing={3}>
-              <Grid item xs={12} sm={3} >
+              <Grid item xs={12} sm={12} md={6} xl={3} >
                 <Paper className={classes.projectContainer}>
                   <Typography variant="h5">
                     Create Project
-                </Typography>
+                  </Typography>
                   <Fab onClick={handleCreateProject} className={classes.addIcon}>
                     <AddIcon />
                   </Fab>
@@ -204,24 +185,24 @@ function Projects() {
               </Grid>
               {projects.map((project) => {
                 return (
-                  <Grid item xs={12} sm={3} >
+                  <Grid item xs={12} sm={12} md={6} xl={3}  >
                     <Paper className={classes.projectContainer}>
                       <Typography variant="h5">
                         {project.name}
                       </Typography>
                       {/* TODO make labels responsive */}
                       <Grid container direction="row" spacing={1} style={{ marginTop: 'auto' }}>
-                        <Grid item sm={12} md={4}>
+                        <Grid item xs={6} sm={4}>
                           <Typography variant="body1" className={`${classes.backlog} ${classes.label}`}>
                             Backlog: {project.backlog}
                           </Typography>
                         </Grid>
-                        <Grid item sm={12} md={4}>
+                        <Grid item xs={6} sm={4}>
                           <Typography variant="body1" className={`${classes.inProgress} ${classes.label}`}>
                             In progress: {project.inProgress}
                           </Typography>
                         </Grid>
-                        <Grid item sm={12} md={4}>
+                        <Grid item xs={6} sm={4}>
                           <Typography variant="body1" className={`${classes.completed} ${classes.label}`}>
                             Completed: {project.completed}
                           </Typography>
@@ -233,20 +214,7 @@ function Projects() {
               })}
             </Grid>
           </Box>
-          <ClickAway>
-            <Backdrop className={classes.backdrop} open={backdropOpen}>
-              <ClickAwayListener onClickAway={handleBackdropClose}>
-                <Container maxWidth="sm">
-                  <Card className={classes.projectForm}>
-                    <FormControl onSubmit={handleFormSubmit}>
-                      <TextField id="outlined-basic" label="Project Name" required variant="outlined" />
-                      <Button type="submit" variant="contained" color="primary">Create</Button>
-                    </FormControl>
-                  </Card>
-                </Container>
-              </ClickAwayListener>
-            </Backdrop>
-          </ClickAway>
+          <CreateProjectForm open={backdropOpen} setBackdrop={handleBackdrop} />
         </Container >
       </Layout >
     </div >
