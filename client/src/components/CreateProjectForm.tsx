@@ -49,7 +49,6 @@ function CreateProjectForm(props: CreateProjectFormProps) {
   return (
     <Backdrop className={classes.backdrop} open={backdropOpen}>
       <ClickAway>
-        {/* <ClickAwayListener onClickAway={handleBackdropClose}> */}
         <Container maxWidth="sm">
           <Card className={classes.projectForm}>
             <FormControl onSubmit={handleFormSubmit}>
@@ -58,7 +57,6 @@ function CreateProjectForm(props: CreateProjectFormProps) {
             </FormControl>
           </Card>
         </Container>
-        {/* </ClickAwayListener> */}
       </ClickAway>
     </Backdrop>
   )

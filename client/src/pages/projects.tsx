@@ -141,6 +141,7 @@ function Projects() {
   const [backdropOpen, setBackDropOpen] = useState(false)
   const theme = useTheme()
   const matches = useMediaQuery(theme.breakpoints.down('sm'))
+  console.log(authState)
   useEffect(() => {
     // load latest project data from api
   })
@@ -183,9 +184,9 @@ function Projects() {
                   </Fab>
                 </Paper>
               </Grid>
-              {projects.map((project) => {
+              {projects.map((project, idx) => {
                 return (
-                  <Grid item xs={12} sm={12} md={6} xl={3}  >
+                  <Grid item xs={12} sm={12} md={6} xl={3} key={idx} >
                     <Paper className={classes.projectContainer}>
                       <Typography variant="h5">
                         {project.name}

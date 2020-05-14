@@ -53,8 +53,8 @@ const Header: React.FC = (props) => {
   const theme = useTheme()
   const matches = useMediaQuery(theme.breakpoints.down('sm'))
   const { authState, authService } = useOktaAuth()
-  const login = () => authService.login('/')
-  const logout = () => authService.logout('/')
+  const login = () => { if (!authState.isAuthenticated) authService.login('/') }
+  const logout = () => { if (authState.isAuthenticated) authService.logout('/') }
   const TitleContainer: React.FC = (props) => {
     return matches ? <Box pl={2} className={classes.mobileTitle}>{props.children}</Box>
       : <Box className={classes.title}>{props.children}</Box>
