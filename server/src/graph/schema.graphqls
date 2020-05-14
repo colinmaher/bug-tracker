@@ -15,6 +15,7 @@ type User {
 
 type Query {
   projects: [Project!]!
+  user: User!
 }
 
 input NewProject {
@@ -22,6 +23,12 @@ input NewProject {
   userId: ID!
 }
 
+input NewUser {
+  name: String!
+  userId: ID!
+}
+
 type Mutation {
   createProject(input: NewProject!): Project!
+  createUser(input: NewUser!): User!
 }

@@ -1,0 +1,24 @@
+{
+  "name": "bug-tracker",
+  "version": "1.0.0",
+  "description": "A simple software bug tracker",
+  "scripts": {
+    "start": "concurrently  \"cd client && npm run dev\" \"cd server/src && gin --port 8079 --appPort 8080 --all -i run server.go\"",
+    "start:server": "cd server/src && gin --port 8079 --appPort 8080 --all -i run server.go",
+    "start:client": "cd client && npm run dev"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/colinmaher/bug-tracker.git"
+  },
+  "keywords": [],
+  "author": "Colin Maher",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/colinmaher/bug-tracker/issues"
+  },
+  "homepage": "https://github.com/colinmaher/bug-tracker#readme",
+  "devDependencies": {
+    "concurrently": "^5.2.0"
+  }
+}

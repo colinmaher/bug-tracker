@@ -22,7 +22,17 @@ func (r *mutationResolver) CreateProject(ctx context.Context, input model.NewPro
 	return project, nil
 }
 
+func (r *mutationResolver) CreateUser(ctx context.Context, input model.NewUser) (*model.User, error) {
+	panic(fmt.Errorf("not implemented"))
+}
+
 func (r *queryResolver) Projects(ctx context.Context) ([]*model.Project, error) {
+	// panic(fmt.Errorf("not implemented"))
+	projects := r.projects
+	return projects, nil
+}
+
+func (r *queryResolver) User(ctx context.Context) (*model.User, error) {
 	panic(fmt.Errorf("not implemented"))
 }
 

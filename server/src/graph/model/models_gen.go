@@ -7,6 +7,11 @@ type NewProject struct {
 	UserID string `json:"userId"`
 }
 
+type NewUser struct {
+	Name   string `json:"name"`
+	UserID string `json:"userId"`
+}
+
 type Project struct {
 	ID   string `json:"id"`
 	Name string `json:"name"`
