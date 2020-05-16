@@ -8,17 +8,26 @@ type NewProject struct {
 }
 
 type NewUser struct {
-	Name   string `json:"name"`
-	UserID string `json:"userId"`
+	Name string `json:"name"`
 }
 
 type Project struct {
-	ID   string `json:"id"`
-	Name string `json:"name"`
-	User string `json:"user"`
+	ID    string             `json:"id"`
+	Name  string             `json:"name"`
+	Owner string             `json:"owner"`
+	Users []*UserPermissions `json:"users"`
 }
 
 type User struct {
-	ID   string `json:"id"`
-	Name string `json:"name"`
+	ID       string     `json:"id"`
+	Name     string     `json:"name"`
+	Projects []*Project `json:"projects"`
+}
+
+type UserPermissions struct {
+	ID          string `json:"id"`
+	CanView     bool   `json:"canView"`
+	CanAddUsers bool   `json:"canAddUsers"`
+	CanEdit     bool   `json:"canEdit"`
+	CanCreate   bool   `json:"canCreate"`
 }

@@ -20,5 +20,6 @@
   "homepage": "https://github.com/colinmaher/bug-tracker#readme",
   "devDependencies": {
     "concurrently": "^5.2.0"
-  }
+  },
+  "dependencies": {}
 }

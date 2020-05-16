@@ -5,17 +5,27 @@
 type Project {
   id: ID!
   name: String!
-  user: ID!
+  owner: ID!
+  users: [UserPermissions]!
+}
+
+type UserPermissions {
+  id: ID!
+  canView: Boolean!
+  canAddUsers: Boolean!
+  canEdit: Boolean!
+  canCreate: Boolean!
 }
 
 type User {
   id: ID!
   name: String!
+  projects: [Project]!
 }
 
 type Query {
-  projects: [Project!]!
-  user: User!
+  projects(userId: ID): [Project]!
+  user(userId: ID): User!
 }
 
 input NewProject {
@@ -25,7 +35,6 @@ input NewProject {
 
 input NewUser {
   name: String!
-  userId: ID!
 }
 
 type Mutation {

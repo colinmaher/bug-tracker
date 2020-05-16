@@ -1,7 +1,6 @@
 package graph
 
 import (
-	"github.com/colinmaher/bug-tracker/server/src/graph/model"
 	// "github.com/colinmaher/bug-tracker/server/src/server"
 	"go.mongodb.org/mongo-driver/mongo"
 )
@@ -12,6 +11,5 @@ import (
 //
 // It serves as dependency injection for your app, add any dependencies you require here.
 type Resolver struct {
-	projects []*model.Project
-	DB       *mongo.Client
+	DB *mongo.Client
 }
