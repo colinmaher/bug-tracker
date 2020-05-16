@@ -11,13 +11,7 @@ import grey from '@material-ui/core/colors/grey';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import Paper from '@material-ui/core/Paper';
-import Backdrop from '@material-ui/core/Backdrop';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
-import Card from '@material-ui/core/Card';
-import TextField from '@material-ui/core/TextField';
-import FormControl from '@material-ui/core/FormControl';
-import ClickAwayListener from '@material-ui/core/ClickAwayListener';
-import Button from '@material-ui/core/Button';
 import CreateProjectForm from '../components/CreateProjectForm';
 
 const projects = [
